@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<html dir="rtl" lang="HE">
+<head>
+  <title>Expenses</title>
+  <meta charset="utf-8"/>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <!------ Include the above in your HEAD tag ---------->
+  
+</head>
+
+<body>
+
+<div class="panel panel-default" dir="rtl"> 
+  <!-- <div class="panel-heading">Education Experience</div> -->
+  <div class="panel-body" id="main_block">
+
+
+    <div class="col-sm-3 nopadding">
+      <div class="form-group">
+        <input type="text" class="form-control" id="sum" name="Sum[]" value="" placeholder="סכום">
+      </div>
+    </div>
+    <div class="col-sm-3 nopadding">
+      <div class="form-group">
+	  
+	  <select class="form-control" id="description" name="Description[]">
+            <option value="0">תיאור</option>
+            <option value="2015">2015</option>
+            <option value="2016">2016</option>
+            <option value="2017">2017</option>
+            <option value="2018">2018</option>
+          </select>
+      </div>
+    </div>
+    <div class="col-sm-3 nopadding">
+      <div class="form-group">
+        <input type="date" class="form-control" id="date" name="Date[]" value="" placeholder="תאריך">
+      </div>
+    </div>
+
+    <div class="col-sm-3 nopadding">
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-btn">
+            <button class="btn btn-success" type="button"  onclick="add_education_fields();"> <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="clear"></div>
+    <div id="education_fields"></div>
+  </div>
+  
+  <!--- Calculate 
+  
+  <button class="btn btn-success" type="button"  onclick="CalculateItems();"> <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> </button>
+  
+      <div class="col-sm-1 nopadding">
+      <div class="form-group">
+        <input type="text" class="form-control" id="totalSum" name="TotalSum[]" value="" placeholder="סהכ">
+      </div>
+    </div>
+--->
+</div>
+<script>
+    var room = 1;
+    // add dynamic fields
+    function add_education_fields() {
+       var description = $('#description option:selected').val();
+       var sum = $('#sum').val();
+       var date = $('#date').val();
+
+        room++;
+        var parentDiv = document.getElementById('education_fields'); // point to the parent Div
+        var childDiv = document.createElement("div"); // create child div on the fly
+        childDiv.setAttribute("class", "form-group removeclass"+room); // add a dynamic class to the child div
+        childDiv.innerHTML = '' +
+            '<div class="col-sm-3 nopadding">' +
+            '<div class="form-group">' +
+            ' <input readonly="readonly" type="text" class="form-control" id="sum" name="Sum[]" value="'+sum+'" placeholder="סכום">' +
+            '</div>' +
+            '</div>' +
+            '<div class="col-sm-3 nopadding">' +
+            '<select readonly="readonly" class="form-control" id="description" name="Description[]">' +
+            '<option value="'+description+'">'+description+'</option>' +
+            '</select>' +
+            '</div>' +
+            '<div class="col-sm-3 nopadding">' +
+            '<div class="form-group"> ' +
+            '<input readonly="readonly" type="text" class="form-control" id="date" name="Date[]" value="'+date+'" placeholder="תאריך">' +
+            '</div>' +
+            '</div>' +
+            '<div class="col-sm-3 nopadding">' +
+            '<div class="form-group">' +
+            '<div class="input-group"> ' +
+            '<div class="input-group-btn">' +
+            ' <button class="btn btn-danger" type="button" onclick="remove_education_fields('+ room +');"> ' +
+            '<span class="glyphicon glyphicon-minus" aria-hidden="true"></span> ' +
+            '</button>' +
+            '</div></div></div>' +
+            '</div>' +
+            '<div class="clear"></div>';
+
+        parentDiv.appendChild(childDiv); //  append or inject dynamic fields to the parent div
+        var StoredDiv = $('.removeclass'+room).html();
+        manage_append(room,StoredDiv,'add'); //  store the dynamic fields to local storage
+        $('#description').val(' ');  // then reset all fields
+        $('#sum').val(' ');
+        $('#Date').val(' ');
+      $('#description').val(0);
+    }
+    // remove dynamic fields
+    function remove_education_fields(rid) {
+        manage_append(rid,0,'delete');
+        $('.removeclass'+rid).remove();
+    }
+     // add and remove dynamic fields from local storage
+    function manage_append(room,html,action){
+        if(action === 'add'){
+            localStorage.setItem(room,html);//
+        }else{
+            localStorage.removeItem(room);
+        }
+
+    }
+
+    // restore dynamic fields from local storage
+    $(function () {
+        for ( var i = 0, len = localStorage.length; i < len; ++i ) {
+         $("#education_fields").append( localStorage.getItem( localStorage.key( i ) ) );
+        }
+    });
+
+</script>
+
+
+<script>
+    var room = 1;
+    // add dynamic fields
+    function CalculateItems() {
+       
+
+
+    // restore dynamic fields from local storage
+    $(function () {
+        for ( var i = 0, len = localStorage.length; i < len; ++i ) {
+         document.getElementById('totalSum').value = localStorage.getItem( localStorage.key( i ) );
+        }
+    });
+}
+</script>
+
+
+
+<script>
+var date = new Date();
+
+var day = date.getDate();
+var month = date.getMonth() + 1;
+var year = date.getFullYear();
+
+if (month < 10) month = "0" + month;
+if (day < 10) day = "0" + day;
+
+var today = year + "-" + month + "-" + day;
+
+
+document.getElementById('date').value = today;
+</script>
+</body>
+</html> 	
